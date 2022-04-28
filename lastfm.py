@@ -149,7 +149,7 @@ def readFile(indexNo):
 	global artist, album
 	artist, album = nth_album.split('§')
 	try:
-	   	get_album_tracks()
+		get_album_tracks()
 	except KeyError:
 		pass
 	

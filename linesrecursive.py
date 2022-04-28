@@ -150,7 +150,7 @@ def main():
 			"add", lambda sel: sel.annotation.set_text(labels[round(sel.target.index)]))
 			plt.show()
 		if choice == 2:
-		 	pass
+			pass
 
 
 	for i in firstDataset:
