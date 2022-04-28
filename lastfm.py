@@ -7,7 +7,7 @@ import datetime
 import time
 
 def clear():
-    os.system("cls" if os.name == "nt" else "clear")
+	os.system("cls" if os.name == "nt" else "clear")
 
 # Cache to avoid spamming API
 requests_cache.install_cache()
@@ -58,12 +58,12 @@ def get_album_tracks():
 
 	tracks = []
 	def artist_tag_remove():
-        
+		
 		for i in tracks_with_tag:
 			try:
 				if artist in i:
 					pass
-                
+				
 				else:
 					tracks.append(i)
 
@@ -136,62 +136,29 @@ def get_track_info(final_tracks):
 		i = int(i)
 		final_playcounts.append(i)
 	#print(final_playcounts)
-	data_display(final_playcounts, final_tracks, album)
-
-def data_display(final_playcounts, final_tracks, album):
-
 	data_save(final_tracks, final_playcounts, album, artist)
-	#xAxisPoints = []
-	#o = 1
-	#while o < (len(final_tracks) + 1):
-	    #xAxisPoints.append(o)
-	    #o = o + 1
-
-	#def logFunc(x,a,b):
-   		#return a + b*np.log(x)
-    
-	#popt,pcov = curve_fit(logFunc, xAxisPoints, final_playcounts)
-	#print('a = ', popt[0])
-	#print('b = ', popt[1])
-
-	#prediction = logFunc(xAxisPoints, popt[0], popt[1])
-
-	#x_new = np.linspace(1, len(final_playcounts), 300)
-	#a_BSpline = interpolate.make_interp_spline(xAxisPoints, prediction)
-	#y_new = a_BSpline(x_new) 
-
-	#_, ax = plt.subplots()
-	#plt.title(album)
-	#plt.bar(xAxisPoints, final_playcounts)
-	#plt.plot(x_new, y_new, 'k') # Curve of best fit plotted
-	# Layout
-	#plt.ylabel("Play Count")
-	#plt.tight_layout()
-	#labels = final_tracks
-	#mplcursors.cursor(ax).connect(
-	#"add", lambda sel: sel.annotation.set_text(labels[round(sel.target.index)]))
-	#plt.show()
+	
 # Take input from text
 def readFile(indexNo):
-    
-    fileAlbums = open('alltimealbums.txt', "r")
-    text_input = fileAlbums.read().rsplit('\n')
-    count = len(text_input)
-    nth_album = text_input[indexNo]
-    fileAlbums.close()
-    global artist, album
-    artist, album = nth_album.split('§')
-    try:
-       	get_album_tracks()
-    except KeyError:
-    	pass
-    
-    if indexNo < count - 1:
-        indexNo += 1
-        readFile(indexNo)
-    
-    elif indexNo == count:
-        menu() 
+	
+	fileAlbums = open('alltimealbums.txt', "r")
+	text_input = fileAlbums.read().rsplit('\n')
+	count = len(text_input)
+	nth_album = text_input[indexNo]
+	fileAlbums.close()
+	global artist, album
+	artist, album = nth_album.split('§')
+	try:
+	   	get_album_tracks()
+	except KeyError:
+		pass
+	
+	if indexNo < count - 1:
+		indexNo += 1
+		readFile(indexNo)
+	
+	elif indexNo == count:
+		menu() 
 
 # Write to txt file
 def data_save(final_tracks, final_playcounts, album, artist):
@@ -216,33 +183,33 @@ def date_stamp():
 
 def menu():
 
-    clear()
+	clear()
 
-    print(" 1. Album Tracks\n 2. File Input\n 0. Exit")
+	print(" 1. Album Tracks\n 2. File Input\n 0. Exit")
 
-    while True:
-        try:
-            print()
-            choice = int(input("Enter choice: "))
-            break
-        except ValueError:
-            print()
-            print("Numbers only please!")
+	while True:
+		try:
+			print()
+			choice = int(input("Enter choice: "))
+			break
+		except ValueError:
+			print()
+			print("Numbers only please!")
 
-    if choice == 1:
-    	clear()
-    	global artist, album
-    	artist, album = input('Please enter the name of an artist, followed by an album by them, using § as a seperator: ').split('§')
-    	get_album_tracks()
-    elif choice == 2:
-    	date_stamp()
-    	readFile(0)
-    	
-    elif choice == 0:
-        clear()
-        exit()
-    else:
-        menu()
+	if choice == 1:
+		clear()
+		global artist, album
+		artist, album = input('Please enter the name of an artist, followed by an album by them, using § as a seperator: ').split('§')
+		get_album_tracks()
+	elif choice == 2:
+		date_stamp()
+		readFile(0)
+		
+	elif choice == 0:
+		clear()
+		exit()
+	else:
+		menu()
 
 if __name__ == '__main__':
 	menu()
