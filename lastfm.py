@@ -37,14 +37,13 @@ def jprint(obj):
 # Get all tracks from supplied album 
 def get_album_tracks():
 
-	#clear()
-
 	r = lastfm_get({
 	'method': 'album.getInfo'
 	})
 
 	album_tracks = (r.json()["album"]["tracks"]["track"])
 	
+	# String cleaning to remove extraneous content
 	tracks_strings = str(album_tracks)
 	tracks_strings = tracks_strings.replace('{', '')
 	tracks_strings = tracks_strings.replace('}', '')
@@ -54,7 +53,6 @@ def get_album_tracks():
 	for i in album_tracks:
 		if "name" in i:
 			tracks_with_tag.append(i)
-	#print(tracks_with_tag)
 
 	tracks = []
 	def artist_tag_remove():
@@ -72,7 +70,7 @@ def get_album_tracks():
 
 	artist_tag_remove()
 
-	# Get rid of unwanted metadata
+	# Get rid of more unwanted metadata
 	nearly_final_tracks = []
 
 	for i in tracks:
@@ -90,13 +88,11 @@ def get_album_tracks():
 			i = i.replace("'", '')
 			nearly_final_tracks.append(i)
 
-	#print(nearly_final_tracks)
 	final_tracks = []
 	for i in nearly_final_tracks:
 		j = i.lstrip()
 		final_tracks.append(j)
 
-	#print(final_tracks)
 	get_track_info(final_tracks)
 
 # Collect playcount for all songs on album
@@ -125,7 +121,6 @@ def get_track_info(final_tracks):
 			})
 
 		try:
-			#jprint(r.json()['track']['playcount'])
 			number = r.json()['track']['playcount']
 			playcounts.append(number)
 		except KeyError:
@@ -135,12 +130,12 @@ def get_track_info(final_tracks):
 	for i in playcounts:
 		i = int(i)
 		final_playcounts.append(i)
-	#print(final_playcounts)
 	data_save(final_tracks, final_playcounts, album, artist)
 	
 # Take input from text
 def readFile(indexNo):
 	
+	# Set input file to read from below
 	fileAlbums = open('alltimealbums.txt', "r")
 	text_input = fileAlbums.read().rsplit('\n')
 	count = len(text_input)
@@ -181,6 +176,7 @@ def date_stamp():
 	file.write(generation_date)
 	file.close()
 
+# Basic UI
 def menu():
 
 	clear()

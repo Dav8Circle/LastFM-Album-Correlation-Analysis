@@ -2,10 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mplcursors
 
-
 def main():
-	firstDataset = open('outputalltimeweek9.txt','r')
-	secondDataset = open('outputalltimeweek10.txt','r')
+
+	# Read from playcount files 
+	firstDataset = open('outputalltimeweek1.txt','r')
+	secondDataset = open('outputalltimeweek2.txt','r')
 	firstDataset = firstDataset.read()
 	secondDataset = secondDataset.read()
 	processed = 0
@@ -32,6 +33,9 @@ def main():
 		song_names = []
 		plays = []
 		new_songs_and_plays = []
+
+		# Janky type conversion
+
 		for i in n:
 			i = i.replace('[', '')
 			i = i.replace(']', '')
@@ -65,6 +69,7 @@ def main():
 			i = i.lstrip()
 			second_new_songs_and_plays.append(i)
 
+		# Create array and fill with change in playcounts over time
 		difference = []
 
 		for i in second_new_songs_and_plays:	
@@ -85,27 +90,23 @@ def main():
 
 
 		# Critical Regions
-
 		CRTable5 = [0.9877 ,0.9000, 0.8054, 0.7293, 0.6694, 0.6215, 0.5822, 0.5494, 0.5214, 0.4973, 0.4762, 0.4575, 0.4409, 0.4259, 0.4124, 0.4000, 0.3887, 0.3783, 0.3687, 0.3598, 0.3515, 0.3438, 0.3365, 0.3297, 0.3233, 0.3172, 0.3115, 0.3061]
 		sampleCheck = np.arange(3, 31, 1)
-		#print(sampleCheck)
-		# Line of Best Fit
 
+		# Line of Best Fit
 		calculation_array = diff.copy()
 
 		standard_deviation = np.std(calculation_array, axis = None)
 		meanY = (sum(calculation_array) / len(length))
 		for i in diff:
 			if i > meanY + standard_deviation:
-				#print('Anomalous point with value', i)
 				calculation_array.pop(calculation_array.index(i))
 
 			
 			if i < meanY - standard_deviation:
-				#print('Anomalous point with value', i)
 				calculation_array.pop(calculation_array.index(i))
 				
-
+		# Calculate PMCC
 		length_calculation = (np.arange(0, len(calculation_array), 1) + 1)
 		meanX = sum(length_calculation) / len(length_calculation)
 		xMinusMeanX = [(element - meanX)  for element in length_calculation]
@@ -124,7 +125,7 @@ def main():
 			try:
 				if i == sample_length:
 					critical_value = CRTable5[(i - 4)]
-					#(critical_value)
+			
 			except IndexError:
 				pass
 			except UnboundLocalError:
@@ -138,6 +139,7 @@ def main():
 			print('Accept the alternative hypothesis')
 			H1_accepted.append(diff)
 
+		# Graphing stage - remove if visualisation not required
 		choice = int(input('Would you like to see the graphs for these statistics? \n 1: Yes \n 2: No \n'))
 		if choice == 1:
 			_, ax = plt.subplots()
@@ -167,7 +169,7 @@ def main():
 		except ZeroDivisionError:
 			pass
 
-
+	# Summary
 	print('Total possible albums: 166 \nTotal processed:', processed)
 	print('Number of times H0 was rejected:', len(H1_accepted))
 
