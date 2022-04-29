@@ -1,6 +1,5 @@
 import requests
 import json
-import requests_cache 
 import numpy as np
 import os
 import datetime
@@ -8,9 +7,6 @@ import time
 
 def clear():
 	os.system("cls" if os.name == "nt" else "clear")
-
-# Cache to avoid spamming API
-requests_cache.install_cache()
 
 API_KEY = 'Insert API Key here'
 SECRET = 'Insert SECRET'
